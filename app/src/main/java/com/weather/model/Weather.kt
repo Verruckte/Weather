@@ -13,6 +13,7 @@ data class Weather(
         val feelsLike: Int = 0
 ) : Parcelable
 
+
 fun getDefaultCity() = City(cityName = "Saransk", lat = 54.1838, lon = 45.1749)
 
 fun getRussianCities() = listOf(

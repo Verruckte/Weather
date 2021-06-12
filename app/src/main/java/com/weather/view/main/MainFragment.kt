@@ -39,11 +39,9 @@ class MainFragment : Fragment() {
         }
     })
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -107,7 +105,6 @@ private fun View.showSnackbar(
     text: String,
     actionText: String,
     action: (View) -> Unit,
-    length: Int = Snackbar.LENGTH_INDEFINITE
-) {
+    length: Int = Snackbar.LENGTH_INDEFINITE) {
     Snackbar.make(this, text, length).setAction(actionText, action).show()
 }
