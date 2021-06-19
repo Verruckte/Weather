@@ -2,10 +2,10 @@ package com.weather.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.weather.app.App
+import com.weather.model.Weather
 import com.weather.model.WeatherDTO
-import com.weather.repository.DetailsRepository
-import com.weather.repository.DetailsRepositoryImpl
-import com.weather.repository.RemoteDataSource
+import com.weather.repository.*
 import com.weather.utils.convertDtoToModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,12 +17,17 @@ private const val CORRUPTED_DATA = "Неполные данные"
 
 class DetailsViewModel(
     val detailsLiveData: MutableLiveData<AppState> = MutableLiveData(),
-    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource())
+    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource()),
+    private val historyRepository: LocalRepository = LocalRepositoryImpl(App.getHistoryDao())
 ) : ViewModel() {
 
     fun getWeatherFromRemoteSource(lat: Double, lon: Double) {
         detailsLiveData.value = AppState.Loading
         detailsRepositoryImpl.getWeatherDetailsFromServer(lat, lon, callback)
+    }
+
+    fun saveCityToDB(weather: Weather) {
+        historyRepository.saveEntity(weather)
     }
 
     private val callback = object : Callback<WeatherDTO> {

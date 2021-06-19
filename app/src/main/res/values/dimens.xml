@@ -14,5 +14,6 @@
     <dimen name="weather_icon_width">150dp</dimen>
     <dimen name="weather_icon_height">150dp</dimen>
     <dimen name="weather_icon_margin">110dp</dimen>
+    <dimen name="margin">5dp</dimen>
 
 </resources>

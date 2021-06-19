@@ -1,14 +1,8 @@
 package com.weather.view.details
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings.Global.getString
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,19 +10,15 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import com.weather.model.FactDTO
 import com.weather.model.Weather
-import com.weather.model.WeatherDTO
 import com.weather.utils.showSnackBar
 import com.weather.viewmodel.AppState
 import com.weather.viewmodel.DetailsViewModel
+import com.weather.weather.City
 import com.weather.weather.R
 import com.weather.weather.databinding.FragmentDetailsBinding
-
 
 
 class DetailsFragment : Fragment() {
@@ -62,16 +52,16 @@ class DetailsFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 binding.mainView.visibility = View.VISIBLE
-                binding.loadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 setWeather(appState.weatherData[0])
             }
             is AppState.Loading -> {
                 binding.mainView.visibility = View.GONE
-                binding.loadingLayout.visibility = View.VISIBLE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
                 binding.mainView.visibility = View.VISIBLE
-                binding.loadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 binding.mainView.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
@@ -88,6 +78,7 @@ class DetailsFragment : Fragment() {
     private fun setWeather(weather: Weather) {
         with(binding) {
             val city = weatherBundle.city
+            saveCity(city, weather)
             cityName.text = city.cityName
             cityCoordinates.text = String.format(
                 getString(R.string.city_coordinates),
@@ -112,6 +103,17 @@ class DetailsFragment : Fragment() {
                 .load(chosenHeaderPicture)
                 .into(headerIcon)
         }
+    }
+
+    private fun saveCity(city: City, weather: Weather) {
+        viewModel.saveCityToDB(
+            Weather(
+                city,
+                weather.temperature,
+                weather.feelsLike,
+                weather.condition
+            )
+        )
     }
 
     private fun getHeaderPicture(cityName: String) {
