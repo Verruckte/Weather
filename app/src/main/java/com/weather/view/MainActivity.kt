@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.weather.maps.GoogleMapsFragment
 import com.weather.view.contacts.ContentProviderFragment
 import com.weather.view.history.HistoryFragment
 import com.weather.view.main.MainFragment
@@ -37,21 +38,31 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_history -> {
                 supportFragmentManager.apply {
                     beginTransaction()
-                            .add(R.id.container, HistoryFragment.newInstance())
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
+                        .add(R.id.container, HistoryFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
                 }
                 true
             }
             R.id.menu_content_provider -> {
                 supportFragmentManager.apply {
                     beginTransaction()
-                            .add(R.id.container, ContentProviderFragment.newInstance())
-                            .addToBackStack("")
-                            .commitAllowingStateLoss()
+                        .add(R.id.container, ContentProviderFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
                 }
                 true
             }
+            R.id.menu_google_maps -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, GoogleMapsFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
