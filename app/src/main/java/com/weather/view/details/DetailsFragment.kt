@@ -98,7 +98,7 @@ class DetailsFragment : Fragment() {
                 )
             }
 
-            getHeaderPicture(city.cityName)
+            chosenHeaderPicture = getHeaderPicture(city.cityName)
             Picasso
                 .get()
                 .load(chosenHeaderPicture)
@@ -116,7 +116,6 @@ class DetailsFragment : Fragment() {
             )
         )
     }
-
 
     companion object {
         const val BUNDLE_EXTRA = "weather"
